@@ -15,6 +15,7 @@ public class UserRepository {
 
     /**
      * Сохранить в базе.
+     *
      * @param user пользователь.
      * @return пользователь с id.
      */
@@ -33,6 +34,7 @@ public class UserRepository {
 
     /**
      * Обновить в базе пользователя.
+     *
      * @param user пользователь.
      */
     public void update(User user) {
@@ -53,6 +55,7 @@ public class UserRepository {
 
     /**
      * Удалить пользователя по id.
+     *
      * @param userId ID
      */
     public void delete(Integer userId) {
@@ -64,53 +67,57 @@ public class UserRepository {
                     .executeUpdate();
             session.getTransaction().commit();
         } catch (Exception e) {
-           session.getTransaction().rollback();
+            session.getTransaction().rollback();
         }
     }
 
     /**
      * Список пользователь отсортированных по id.
+     *
      * @return список пользователей.
      */
     public List<User> findAllOrderById() {
         Session session = sf.openSession();
-        return session.createQuery("from User order by id", User.class).list();
+        return session.createQuery("FROM User ORDER BY id", User.class).list();
     }
 
     /**
      * Найти пользователя по ID
+     *
      * @return пользователь.
      */
     public Optional<User> findById(Integer userId) {
         Session session = sf.openSession();
         Query<User> query = session.createQuery(
-                "from User as u where u.id = :fId", User.class);
+                "FROM User AS u WHERE u.id = :fId", User.class);
         query.setParameter("fId", userId);
         return query.uniqueResultOptional();
     }
 
     /**
      * Список пользователей по login LIKE %key%
+     *
      * @param key key
      * @return список пользователей.
      */
     public List<User> findByLikeLogin(String key) {
         Session session = sf.openSession();
         Query<User> query = session.createQuery(
-                "from User as u where u.login like :fkey", User.class);
+                "FROM User AS u WHERE u.login LIKE :fkey", User.class);
         query.setParameter("fkey", "%" + key + "%");
         return query.getResultList();
     }
 
     /**
      * Найти пользователя по login.
+     *
      * @param login login.
      * @return Optional or user.
      */
     public Optional<User> findByLogin(String login) {
         Session session = sf.openSession();
         Query<User> query = session.createQuery(
-                "from User as u where u.login = :flogin", User.class);
+                "FROM User AS u WHERE u.login = :flogin", User.class);
         query.setParameter("flogin", login);
         return query.uniqueResultOptional();
     }
